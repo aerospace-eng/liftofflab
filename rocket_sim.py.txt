@@ -1,0 +1,77 @@
+"""
+rocket_sim.py
+-----------------------------
+Project: LiftOffLab
+Author: aerospace-eng
+Description: A simple rocket flight simulation using Python.
+GitHub: https://github.com/aerospace-eng/liftofflab
+"""
+
+import matplotlib.pyplot as plt
+import os
+
+# -------------------------------
+# Simulation parameters
+# -------------------------------
+GRAVITY = 9.81         # m/s^2 - Acceleration due to gravity
+THRUST = 200           # N     - Constant thrust force
+MASS = 10              # kg    - Rocket mass
+BURN_TIME = 5          # s     - Duration of thrust
+TOTAL_TIME = 10        # s     - Total simulation time
+DT = 0.1               # s     - Time step
+
+# -------------------------------
+# Initial conditions
+# -------------------------------
+time = 0
+velocity = 0
+altitude = 0
+
+time_data = []
+velocity_data = []
+altitude_data = []
+
+# -------------------------------
+# Simulation loop
+# -------------------------------
+while time <= TOTAL_TIME:
+    # Calculate net force
+    if time <= BURN_TIME:
+        net_force = THRUST - MASS * GRAVITY
+    else:
+        net_force = -MASS * GRAVITY
+
+    acceleration = net_force / MASS
+
+    # Update velocity and altitude
+    velocity += acceleration * DT
+    altitude += velocity * DT
+
+    # Store data for plotting
+    time_data.append(time)
+    velocity_data.append(velocity)
+    altitude_data.append(altitude)
+
+    time += DT
+
+# -------------------------------
+# Plotting results
+# -------------------------------
+plt.figure(figsize=(10, 5))
+plt.plot(time_data, altitude_data, label="Altitude (m)", color='blue')
+plt.plot(time_data, velocity_data, label="Velocity (m/s)", color='orange')
+
+plt.title("🚀 LiftOffLab Rocket Flight Simulation")
+plt.xlabel("Time (s)")
+plt.ylabel("Value")
+plt.legend()
+plt.grid(True)
+
+# -------------------------------
+# Save plot to file
+# -------------------------------
+output_dir = "output"
+os.makedirs(output_dir, exist_ok=True)
+plt.savefig(f"{output_dir}/flight_plot.png", dpi=300)
+
+print("✅ Simulation complete. Plot saved to 'output/flight_plot.png'.")
