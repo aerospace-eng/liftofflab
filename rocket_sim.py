@@ -74,4 +74,5 @@ output_dir = "output"
 os.makedirs(output_dir, exist_ok=True)
 plt.savefig(f"{output_dir}/flight_plot.png", dpi=300)
 
+
 print("✅ Simulation complete. Plot saved to 'output/flight_plot.png'.")
